@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  router:
+    container_name: router
+    build:
+      context: router
+    image: router
+    ports:
+      - 80:80
+    depends_on:
+      - server
+    networks:
+      songsongpapa:
+        ipv4_address: 172.20.0.2
+    volumes:
+      - ./front:/usr/app/src
+    restart: always
+
+  server:
+    container_name: server
+    build:
+      context: back
+    image: server
+    expose:
+      - "${SERVER_PORT}"
+    networks:
+      songsongpapa:
+        ipv4_address: 172.20.0.3
+    env_file:
+      - .env
+    restart: always
+
+networks:
+  songsongpapa:
+    name: songsongpapa
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
