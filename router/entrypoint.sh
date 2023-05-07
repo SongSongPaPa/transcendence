@@ -1,6 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-cd /usr/app/src/front && \
-  yarn && \
-  yarn build && \
-  nginx -g daemon off;
+nginx

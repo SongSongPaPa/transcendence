@@ -3,9 +3,8 @@ FROM alpine:3.17
 WORKDIR /usr/app/src
 
 RUN apk update && \
-    apk add bash nodejs-lts npm nginx && \
-    npm install -g pm2 yarn
+    apk add bash nginx
 
 COPY server.conf /etc/nginx/http.d/
 
-ENTRYPOINT [ "sh", "entrypoint.sh" ]
+CMD [ "nginx", "-g", "daemon off;" ]

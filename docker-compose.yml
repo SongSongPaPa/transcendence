@@ -1,20 +1,34 @@
 version: "3.8"
 
 services:
-  router:
-    container_name: router
+  # router:
+  #   container_name: router
+  #   build:
+  #     context: router
+  #   image: router
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - server
+  #   volumes:
+  #     - ./front:/usr/app/src/front
+  #   networks:
+  #     songsongpapa:
+  #       ipv4_address: 172.20.0.2
+  #   restart: always
+
+  web:
+    container_name: web
     build:
-      context: router
-    image: router
+      context: front
+    image: web
     ports:
-      - 80:80
-    depends_on:
-      - server
+      - 3001:3001
     networks:
       songsongpapa:
-        ipv4_address: 172.20.0.2
-    volumes:
-      - ./front:/usr/app/src
+        ipv4_address: 172.20.0.3
+    env_file:
+      - .env
     restart: always
 
   server:
@@ -22,13 +36,29 @@ services:
     build:
       context: back
     image: server
-    expose:
-      - "${SERVER_PORT}"
+    ports:
+      - 3000:3000
     networks:
       songsongpapa:
-        ipv4_address: 172.20.0.3
+        ipv4_address: 172.20.0.4
+    depends_on:
+      - database
     env_file:
       - .env
+    restart: always
+
+  database:
+    image: postgres:latest
+    container_name: database
+    expose:
+      - "${DB_PORT}"
+    networks:
+      songsongpapa:
+        ipv4_address: 172.20.0.5
+    environment:
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_DATABASE}"
     restart: always
 
 networks:
