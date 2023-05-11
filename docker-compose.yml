@@ -1,22 +1,6 @@
 version: "3.8"
 
 services:
-  # router:
-  #   container_name: router
-  #   build:
-  #     context: router
-  #   image: router
-  #   ports:
-  #     - 80:80
-  #   depends_on:
-  #     - server
-  #   volumes:
-  #     - ./front:/usr/app/src/front
-  #   networks:
-  #     songsongpapa:
-  #       ipv4_address: 172.20.0.2
-  #   restart: always
-
   web:
     container_name: web
     build:
@@ -38,6 +22,7 @@ services:
     image: server
     ports:
       - 3000:3000
+      - 4000:4000
     networks:
       songsongpapa:
         ipv4_address: 172.20.0.4
